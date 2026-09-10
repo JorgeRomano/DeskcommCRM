@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  title: DeskcommCRM API v1
+  version: "1.0"
+  description: >
+    API REST versionada por path (`/api/v1`) do DeskcommCRM.
+    Gerado pelo Redator (Reversa) a partir dos route handlers reais.
+    Envelope canônico: sucesso `{ data, meta? }`; erro `{ error: { code, message, details? } }`.
+    Toda resposta traz o header `X-Request-Id`. Códigos de erro em `lib/api/errors.ts`.
+    Confiança: 🟢 rotas/métodos confirmados no código; 🟡 alguns schemas de corpo inferidos.
+servers:
+  - url: https://{dominio}/api/v1
+    variables:
+      dominio: { default: crm.exemplo.com }
+tags:
+  - { name: leads }
+  - { name: contacts }
+  - { name: conversations }
+  - { name: pipelines }
+  - { name: team }
+  - { name: system }
+
+components:
+  securitySchemes:
+    cookieAuth: { type: apiKey, in: cookie, name: sb-deskcomm-auth }   # sessão Supabase (getUser)
+    bearerMcp: { type: http, scheme: bearer, description: "Token dsk_ (superfície MCP, não v1 padrão)" }
+  responses:
+    Unauthorized:
+      description: Não autenticado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    Forbidden:
+      description: Papel insuficiente / MFA / tenant
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    NotFound:
+      description: Não encontrado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+  schemas:
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, example: forbidden_role }
+            message: { type: string }
+            details: {}
+    Lead:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        status: { type: string, enum: [open, won, lost] }
+        pipeline_id: { type: string, format: uuid }
+        stage_id: { type: string, format: uuid }
+        contact_id: { type: string, format: uuid, nullable: true }
+        value_cents: { type: integer, nullable: true }
+        currency: { type: string, nullable: true }
+        tags: { type: array, items: { type: string } }
+    Contact:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, nullable: true }
+        phone_number: { type: string, nullable: true }
+        email: { type: string, nullable: true }
+        is_blocked: { type: boolean }
+
+security:
+  - cookieAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [system]
+      summary: Health check (público)
+      security: []
+      responses:
+        '200': { description: OK }
+        '503': { description: Dependência degradada (WAHA/Redis/Supabase) }
+
+  /leads:
+    post:
+      tags: [leads]
+      summary: Criar lead (requireRole agent)
+      responses:
+        '201': { description: Criado, content: { application/json: { schema: { type: object, properties: { data: { $ref: '#/components/schemas/Lead' } } } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /leads/{id}:
+    patch:
+      tags: [leads]
+      summary: Atualizar lead
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: OK }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /leads/{id}/move:
+    post:
+      tags: [leads]
+      summary: Mover lead de estágio (fractional indexing)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '409': { description: state_conflict } }
+  /leads/{id}/win:
+    post:
+      tags: [leads]
+      summary: Ganhar (encerraDemanda won)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '422': { description: pipeline_no_won_stage } }
+  /leads/{id}/lose:
+    post:
+      tags: [leads]
+      summary: Perder (exige lost_reason)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '422': { description: validation_failed (motivo obrigatório) } }
+  /leads/{id}/timeline:
+    get:
+      tags: [leads]
+      summary: Timeline de atividades do lead
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /leads/bulk:
+    post:
+      tags: [leads]
+      summary: Ação em lote (máx 50 cards — AT-06)
+      responses: { '200': { description: OK }, '422': { description: bulk_too_large } }
+  /leads/at-risk:
+    get:
+      tags: [leads]
+      summary: Radar de risco (requireRole agent)
+      responses: { '200': { description: OK } }
+  /leads/import:
+    post:
+      tags: [leads]
+      summary: Importar leads por planilha
+      responses: { '200': { description: OK } }
+
+  /contacts:
+    get: { tags: [contacts], summary: Listar contatos, responses: { '200': { description: OK } } }
+  /contacts/{id}:
+    get:
+      tags: [contacts]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK, content: { application/json: { schema: { type: object, properties: { data: { $ref: '#/components/schemas/Contact' } } } } } }, '404': { $ref: '#/components/responses/NotFound' } }
+    patch:
+      tags: [contacts]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '403': { description: 'lgpd_anonymization_irreversible se anonimizado' } }
+    delete:
+      tags: [contacts]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '204': { description: Sem conteúdo } }
+  /contacts/merge:
+    post: { tags: [contacts], summary: Mesclar contatos duplicados, responses: { '200': { description: OK } } }
+
+  /conversations:
+    get: { tags: [conversations], summary: Listar conversas (escopo por VisibilityMode/RLS), responses: { '200': { description: OK } } }
+  /conversations/{id}:
+    get:
+      tags: [conversations]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+    patch:
+      tags: [conversations]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /conversations/{id}/claim:
+    post:
+      tags: [conversations]
+      summary: "Eu cuido" (claim atômico — AT-02)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '409': { description: already_assigned } }
+  /conversations/{id}/close:
+    post:
+      tags: [conversations]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+
+  /pipelines:
+    get: { tags: [pipelines], summary: Listar funis (requireRole manager), responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } } }
+    post: { tags: [pipelines], summary: Criar funil, responses: { '201': { description: Criado } } }
+  /pipelines/default:
+    get: { tags: [pipelines], summary: Funil padrão (requireRole agent), responses: { '200': { description: OK } } }
+
+  /team:
+    get: { tags: [team], summary: Listar equipe (requireRole manager), responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } } }
+  /team/invite:
+    post: { tags: [team], summary: Convidar membro (admin), responses: { '200': { description: OK } } }
+  /team/{user_id}/role:
+    patch:
+      tags: [team]
+      summary: Alterar papel (admin)
+      parameters: [{ name: user_id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } }
+
+# NOTA (🟡): esta é uma amostra REPRESENTATIVA da superfície v1 (~166 handlers).
+# As rotas acima foram confirmadas nos route handlers reais. Domínios não listados
+# aqui (ads, agenda, ai, audit, auth, automation-rules, channels, integrations,
+# lgpd, marca, message-templates, messages, metrics, notifications, onboarding,
+# reports, settings, webhooks) seguem o MESMO padrão de envelope, X-Request-Id e
+# requireRole. Superfícies não-cookie: /api/v1/cron/*, /api/internal/*, /api/mcp
+# (Bearer/secret próprio). Gerar o OpenAPI completo exige varrer os 166 handlers.
