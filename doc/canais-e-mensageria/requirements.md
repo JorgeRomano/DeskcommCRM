@@ -30,6 +30,7 @@ Camada que conecta o WhatsApp (via WAHA) ao CRM: recebe webhooks, resolve identi
 - Janela de 24h: fora dela, só template aprovado (canais com hetero-restrição). 🟢 (W-04)
 - Pausa por atendimento manual: 60min, renova a cada fala, nunca encurta silêncio maior. 🟢
 - `service_revision` avança ao tocar estado terminal ou trocar de demanda. 🟢 (AT-01)
+- Supervisor manager+ pode LER E RESPONDER conversa não atribuída (não é somente-leitura). 🟢 (AT-04, validado pelo usuário 2026-09-10)
 
 ## Requisitos Funcionais
 

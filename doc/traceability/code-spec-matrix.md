@@ -43,15 +43,20 @@
 | `lib/onboarding/*` | `onboarding-e-instalacao/` | 🟢 |
 | `lib/instalacao/*` | `onboarding-e-instalacao/` | 🟡 |
 
-## Módulos sem unit dedicada (n/a — candidatos a análise adicional)
+## Módulos a documentar em próxima extração (decisão do usuário 2026-09-10)
 
-| Módulo | Nota |
+> O usuário decidiu (questions.md#6) documentar preferencialmente estes módulos como units próprias,
+> e (questions.md#4) que `notifications` provavelmente ganha unit própria. Ficam planejados para uma
+> extração incremental (não gerados nesta passada).
+
+| Módulo | Decisão |
 |---|---|
-| `lib/metrics/*`, `lib/reports/*` | n/a — métricas/relatórios (transversal; cobertos indiretamente) |
-| `lib/catalogo/*` | n/a — catálogo de produtos |
-| `lib/settings/*` | n/a — configurações (transversal) |
-| `lib/retencao/*`, `lib/operacao/*` | n/a — retenção/operação |
-| `lib/tarefas/*`, `lib/tempo/*`, `lib/relogio/*` | n/a — tarefas/tempo |
+| `lib/notifications/*` | 🔜 unit própria (push VAPID) — provável |
+| `lib/metrics/*`, `lib/reports/*` | 🔜 documentar (fórmulas de métricas/relatórios) |
+| `lib/catalogo/*` | 🔜 documentar (regras de produto) |
+| `lib/settings/*` | 🔜 documentar (configurações) |
+| `lib/retencao/*`, `lib/operacao/*` | 🔜 documentar |
+| `lib/tarefas/*`, `lib/tempo/*`, `lib/relogio/*` | 🔜 documentar (tarefas/tempo) |
 | `lib/navigation/*`, `lib/ui/*`, `lib/i18n/*` | n/a — infra de UI |
 | `lib/crypto/*`, `lib/net/*`, `lib/http/*`, `lib/query/*` | n/a — utilitários |
 | `lib/realtime/*`, `lib/system/*`, `lib/release/*` | n/a — infra |

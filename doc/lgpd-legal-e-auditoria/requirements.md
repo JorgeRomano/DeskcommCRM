@@ -19,11 +19,12 @@ Conformidade LGPD by-design (export do Art. 18 II e redação/anonimização por
 ## Regras de Negócio
 
 - Anonimização preferida sobre delete físico; irreversível (403 `lgpd_anonymization_irreversible`). 🟢 (L-01/L-04)
-- SLA em dias úteis BR: export D+7, redact D+15. 🟡 (L-02/L-03; dias inferidos)
+- SLA em dias úteis BR: export D+7, redact D+15 — sem casos com prazo diferente. 🟢 (L-02/L-03; validado pelo usuário 2026-09-10)
 - PDF de LGPD nomeia CONTROLADOR (`organizations.legal_name`) + DPO, sem marca. 🟢
 - Redação enfileira o avatar em `storage_redaction_queue` ANTES de zerar o ponteiro (fail-closed). 🟢
 - Redação de tenant marca `organizations.status='redacted'` (lotes de 100). 🟢
 - Auditoria nunca bloqueia a mutação (fire-and-forget), mas é barulhenta (Sentry). 🟢
+- Retenção do audit: **5 anos por padrão** (configurável, piso 90 dias); **sem camada cold/S3** (nunca construída). 🟢 (L-10; validado pelo usuário 2026-09-10)
 - `AUDIT_ACTIONS` é fonte única (painel deriva do array). 🟢
 - Resolvedor de marca NUNCA lança (roda em `app/layout.tsx`); fonte é o banco, `.env` é semente/piso. 🟢
 - CPF/PII nunca em log (`beforeSend` + logger). 🟢 (L-08)

@@ -75,7 +75,7 @@ Corolário da **interruptibilidade**: o sistema nunca deve ser mais rápido do q
 ### 3.2 LGPD (L) 🟢
 
 - **L-01** — Anonimização preferida sobre delete físico (`cascadeRedactContact`).
-- **L-02/L-03** — SLA em dias úteis BR: data_request D+7, redact D+15 (`lib/lgpd/repository.ts:computeDueAt`). 🟡 (dias exatos inferidos do catálogo/comentários).
+- **L-02/L-03** — SLA em dias úteis BR: data_request D+7, redact D+15, sem casos com prazo diferente. 🟢 (validado pelo usuário 2026-09-10).
 - **L-04** — Anonimização é irreversível (`403 lgpd_anonymization_irreversible`).
 - **L-05** — Consentimento granular; `transactional` em resposta a inbound é dispensado (janela 24h).
 - **L-08** — CPF/PII nunca em log (mascarado; `beforeSend` do Sentry + `lib/logger.ts`).
@@ -109,8 +109,8 @@ Corolário da **interruptibilidade**: o sistema nunca deve ser mais rápido do q
 
 - **AT-01** — Conversa e demanda têm ciclos distintos revisionados (`service_revision` avança ao tocar estado terminal ou trocar demanda). 🟢 (`lib/atendimento/fronteira.ts`).
 - **AT-02** — "Eu cuido" é claim atômico (`UPDATE ... WHERE assigned_to IS NULL`). 🟡 (regra no catálogo; a UI não foi lida em profundidade).
-- **AT-04** — Supervisor (manager+) lê conversa não atribuída em modo somente-leitura. 🟡.
-- **AT-05** — Notas internas nunca vão pro WhatsApp. 🟡.
+- **AT-04 (corrigido)** — Supervisor **manager+ pode LER E RESPONDER** conversa não atribuída. 🟢 (validado pelo usuário 2026-09-10 — corrige o catálogo, que dizia "somente-leitura").
+- **AT-05** — Notas internas nunca vão pro WhatsApp. 🟡 (não reconfirmado pelo usuário).
 - **Pausa por atendimento manual pelo canal**: 60min, renova a cada fala, nunca encurta silêncio maior (`pausarIaPorAtendimentoManual`). 🟢.
 
 ### 3.6 IA e bot (IA) 🟢
@@ -153,8 +153,8 @@ Detalhado em `permissions.md`. Papéis: `viewer(1) < agent(2) < ai_operator(3) <
 ## 6. Lacunas e pontos de validação humana 🔴
 
 - 🔴 **SQL das RPCs e policies RLS** não lidos (só call sites) — o Data Master deve documentá-los a partir de `supabase/migrations/`.
-- 🟡 **AT-02/AT-04/AT-05/AT-08** (claim atômico, supervisor read-only, notas internas, idle→offline): regras no catálogo, não confirmadas no código nesta escavação (UI/handlers de mensagens não lidos em profundidade).
-- 🟡 **Dias exatos do SLA LGPD** (7/15): inferidos do catálogo; confirmar em `lib/lgpd/sla.ts`.
-- 🔴 **Retenção de audit (5 anos, piso 90 dias)**: regra L-10 no catálogo; `fn_expurgar_auditoria_vencida` não lida.
+- 🟢 **AT-04 corrigido pelo usuário:** supervisor manager+ pode ler E responder (não é somente-leitura). 🟡 **AT-02/AT-05/AT-08** (claim atômico, notas internas, idle→offline) seguem não reconfirmadas.
+- 🟢 **SLA LGPD:** export D+7, redact D+15 (sem exceção) — validado pelo usuário.
+- 🟢 **Retenção de audit:** 5 anos por padrão; **sem camada cold/S3** (nunca construída) — validado pelo usuário.
 - 🟡 **Notifications** (push VAPID): pipeline não lido em profundidade.
 - 🔴 **Divergências catálogo↔código**: o próprio catálogo registra correções recentes (ex.: opt-out em ES já coberto; domingo liberado). Ao gerar specs, o código vigente vence a prosa.

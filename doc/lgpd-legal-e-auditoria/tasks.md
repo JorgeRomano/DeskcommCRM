@@ -32,9 +32,9 @@
   - Confiança: 🟢
 
 - [ ] T-05, Implementar `createLgpdRequest` + SLA em dias úteis BR
-  - Origem no legado: `lib/lgpd/repository.ts`, `lib/lgpd/sla.ts` 🟡
-  - Critério de pronto: due_at correto (export D+7, redact D+15) 🟡
-  - Confiança: 🟡
+  - Origem no legado: `lib/lgpd/repository.ts`, `lib/lgpd/sla.ts`
+  - Critério de pronto: due_at correto — export D+7, redact D+15 (sem exceção; validado pelo usuário)
+  - Confiança: 🟢
 
 - [ ] T-06, Implementar auditoria append-only fire-and-forget
   - Origem no legado: `lib/audit/index.ts`, `lib/audit/actions.ts`
