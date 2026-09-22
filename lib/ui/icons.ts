@@ -49,6 +49,7 @@ export {
   List,
   Bell,
   BellSlash,
+  EnvelopeSimple,
   PaperPlaneTilt,
   Smiley,
   Check,
@@ -88,9 +89,16 @@ export {
   MonitorPlay,
   // conversation
   ChatCircle,
+  WhatsappLogo,
+  InstagramLogo,
+  MessengerLogo,
   Phone,
+  PhoneIncoming,
+  PhoneOutgoing,
+  PhoneX,
   Paperclip,
   Microphone,
+  MicrophoneSlash,
   Image as ImageIcon,
   ImageSquare,
   MusicNote,
@@ -104,6 +112,7 @@ export {
   // followup flow builder (Task 6.2)
   GitBranch,
   Flag,
+  TreeStructure,
   // misc
   DotsThree,
   CaretDown,
