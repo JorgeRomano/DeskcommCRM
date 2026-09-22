@@ -163,3 +163,7 @@ docker-compose.override.yml
 # rodada. Versionado, ele sujava a árvore de quem rodava os testes.
 __pycache__/
 *.pyc
+
+# Reversa
+.reversa/config.user.toml
+_reversa_sdd/

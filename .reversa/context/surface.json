@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-09-22T00:00:00Z",
+  "project_root": "d:/Users/Jorge/Projetos-atu/DeskcommCRM",
+  "project_name": "DeskcommCRM",
+  "languages": [
+    { "name": "TypeScript", "extensions": [".ts", ".tsx"], "file_count": 3904 },
+    { "name": "SQL", "extensions": [".sql"], "file_count": 320 },
+    { "name": "Shell", "extensions": [".sh"], "file_count": 79 },
+    { "name": "JavaScript/ESM", "extensions": [".mjs", ".js", ".cjs"], "file_count": 40 },
+    { "name": "CSS", "extensions": [".css"], "file_count": 2 }
+  ],
+  "primary_language": "TypeScript",
+  "frameworks": [
+    { "name": "Next.js", "version": "16.x (App Router, Turbopack)", "source": "package.json" },
+    { "name": "React", "version": "19.x", "source": "package.json" },
+    { "name": "Supabase (postgres+auth+realtime+storage)", "version": "@supabase/supabase-js 2.x, @supabase/ssr 0.12.x", "source": "package.json" },
+    { "name": "Zod", "version": "4.x", "source": "package.json" },
+    { "name": "Tailwind CSS", "version": "4.x (config em CSS)", "source": "package.json" },
+    { "name": "shadcn/ui + Radix UI", "version": "new-york style", "source": "components.json" },
+    { "name": "Vercel AI SDK", "version": "ai 7.x (@ai-sdk/anthropic|openai|google 4.x)", "source": "package.json" },
+    { "name": "MCP SDK", "version": "@modelcontextprotocol/sdk 1.x", "source": "package.json" },
+    { "name": "TanStack React Query", "version": "5.x", "source": "package.json" },
+    { "name": "Upstash Redis", "version": "1.x", "source": "package.json" },
+    { "name": "Sentry", "version": "@sentry/nextjs 10.x", "source": "package.json" },
+    { "name": "Vitest", "version": "4.x", "source": "package.json" },
+    { "name": "Playwright", "version": "1.x (+ @axe-core/playwright)", "source": "package.json" },
+    { "name": "pg (node-postgres)", "version": "8.x", "source": "package.json" },
+    { "name": "nodemailer / resend", "version": "nodemailer 10.x, resend 6.x", "source": "package.json" }
+  ],
+  "package_manager": "pnpm@9.15.9",
+  "node_version": ">=22",
+  "entry_points": [
+    { "path": "app/layout.tsx", "type": "app_entry" },
+    { "path": "app/page.tsx", "type": "app_entry" },
+    { "path": "proxy.ts", "type": "edge_middleware" },
+    { "path": "workers/agent-worker/main.ts", "type": "worker_entry" },
+    { "path": "instrumentation.ts", "type": "observability_boot" },
+    { "path": "instrumentation-client.ts", "type": "observability_boot_client" },
+    { "path": "app/api/v1/", "type": "rest_api_root" },
+    { "path": "app/api/mcp/", "type": "mcp_api_root" },
+    { "path": "app/api/internal/", "type": "internal_api_root" }
+  ],
+  "config_files": [
+    "next.config.ts",
+    "tsconfig.json",
+    "tsconfig.typecheck.json",
+    "eslint.config.mjs",
+    "postcss.config.mjs",
+    ".prettierrc",
+    "components.json",
+    "vitest.config.ts",
+    "vitest.db.config.ts",
+    "vitest.cercas.ts",
+    "playwright.config.ts",
+    "supabase/config.toml",
+    ".nvmrc",
+    ".env.example",
+    ".env.hostgator.example",
+    ".env.voip.example",
+    "sentry.server.config.ts",
+    "sentry.edge.config.ts",
+    "Caddyfile"
+  ],
+  "ci_cd": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/e2e.yml",
+    ".github/workflows/perf.yml",
+    ".github/workflows/publish-image.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/relogio.yml",
+    ".github/workflows/acolhida.yml",
+    ".github/workflows/vigia-de-colisao.yml"
+  ],
+  "docker": {
+    "dockerfile": "Dockerfile",
+    "extra_dockerfiles": ["Dockerfile.worker", "Dockerfile.scheduler", "Dockerfile.voice-agent"],
+    "compose": [
+      "docker-compose.yml",
+      "docker-compose.prod.yml",
+      "docker-compose.traefik.yml",
+      "docker-compose.build.yml",
+      "docker-compose.npm.yml"
+    ]
+  },
+  "database_hints": [
+    { "path": "supabase/migrations/", "type": "migrations_dir", "count": 312 },
+    { "path": "supabase/baseline.sql", "type": "baseline_dump_plus_appendix", "lines": 32097 },
+    { "path": "supabase/migrations/MANIFEST.md", "type": "migration_manifest" },
+    { "path": "lib/database.types.ts", "type": "generated_types" }
+  ],
+  "test_framework": "Vitest (unit + db invariants) + Playwright (e2e + journeys, axe-core)",
+  "test_file_count": 1486,
+  "e2e_spec_count": 142,
+  "db_invariant_count": 254,
+  "modules": [
+    "agent-engine", "ai", "auth", "api", "supabase", "channels", "waha", "voice", "voip",
+    "wacalls", "inbox", "messaging", "atendimento", "leads", "pipelines", "kanban", "contacts",
+    "tags", "agenda", "financeiro", "catalogo", "conversoes", "prospecting", "followup",
+    "escalacao", "routing", "automation", "notifications", "reports", "metrics", "audit",
+    "lgpd", "legal", "opt-out", "retencao", "branding", "tenants", "team", "users", "settings",
+    "onboarding", "instalacao", "extensions", "external-db", "nuvemshop", "plataformas-de-anuncio",
+    "mcp", "event-log", "realtime", "relogio", "tempo", "system", "operacao", "impersonate",
+    "navigation", "email", "crypto", "net", "http", "i18n", "query", "schemas", "release"
+  ],
+  "surfaces_non_cookie": [
+    { "path": "app/api/v1/cron/", "auth": "Bearer INTERNAL_CRON_SECRET (fail-closed)" },
+    { "path": "app/api/internal/", "auth": "x-internal-secret" },
+    { "path": "app/api/mcp/", "auth": "Bearer dsk_... contra api_tokens" },
+    { "path": "app/api/v1/webhooks/", "auth": "HMAC + path token" },
+    { "path": "app/api/v1/ (parcial)", "auth": "cookie OU bearer via lib/api/auth-dual.ts" }
+  ],
+  "api_route_count_total": 339,
+  "api_route_count_v1": 337,
+  "total_files_tracked": 5647,
+  "organization_suggestion": {
+    "granularity": "hybrid",
+    "rationale": "Coexistem dois sinais fortes de peso parecido: roteamento REST centralizado e versionado em app/api/v1/** (337 route.ts) e pastas top-level de domínio em lib/ e app/app/ (agenda, financeiro, ai, leads, pipelines...).",
+    "signals": [
+      { "type": "centralized_routing", "evidence": ["app/api/v1/", "app/api/v1/leads/route.ts", "app/api/v1/conversations/", "proxy.ts"] },
+      { "type": "top_level_domain_folders", "evidence": ["lib/agent-engine/", "lib/financeiro/", "lib/agenda/", "app/app/leads/", "app/app/pipelines/", "app/app/inbox/"] },
+      { "type": "bdd_e2e_specs", "evidence": ["tests/e2e/", "tests/journeys/"] }
+    ],
+    "features": []
+  }
+}
