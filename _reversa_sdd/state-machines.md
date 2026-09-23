@@ -400,12 +400,43 @@ stateDiagram-v2
 
 ---
 
+## Máquina de estados — `prospecting_campaigns` 🟢
+
+> Fechada pela migration `20260921030100_0369_prospeccao_nativa.sql:16` (e `baseline.sql`). [Revisão] usuário apontou a migration em 2026-09-23; era 🔴.
+
+Dois campos de estado independentes:
+
+- **`status`** (ciclo de vida da campanha), default `draft`, CHECK `('draft','running','paused','completed')`.
+- **`search_status`** (execução da busca de leads), default `starting`, CHECK `('starting','running','succeeded','failed','unknown')`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> starting
+    starting --> running
+    running --> succeeded
+    running --> failed
+    starting --> failed
+    starting --> unknown
+    running --> unknown
+    succeeded --> [*]
+    failed --> [*]
+```
+
+> `unknown` é o estado de degradação (execução perdida/indeterminada). O CHECK garante o conjunto fechado; transições acima são 🟡 (o CHECK fixa os valores, a ordem entre eles é inferida do fluxo de busca).
+
+---
+
+## Transições de `calendar_appointments` 🟢 (ator) / 🟡 (guarda temporal)
+
+> [Revisão] usuário confirmou em 2026-09-23: **apenas agente IA e operador** disparam as transições (confirmar/completar/no_show). O **cliente/lead nunca** dispara diretamente. Era 🔴.
+
+- Atores autorizados: **agente IA** (via tool MCP) e **operador** (via CRM). Cliente não transiciona.
+- 🟡 Guarda de ordem temporal (ex.: `no_show` só após a hora do compromisso; não `completar` agendamento futuro) permanece inferida — não localizada como CHECK/trigger explícito; confirmar com o Data Master ao documentar o schema de agenda.
+
+---
+
 ## Lacunas 🔴
 
-- 🔴 Transições de `calendar_appointments` marcadas 🟡 (confirmar/completar/no_show) inferidas do
-  nome das tools MCP — validar quem pode disparar cada uma e se há guarda de ordem temporal.
-- 🔴 `prospecting_campaigns.search_status` tem conjunto de valores não fechado no dicionário —
-  requer leitura direta do enum/CHECK.
 - 🔴 O convite de time (`StatusConvite`: pendente/aceito/expirado/revogado) é **derivado**, nunca
   coluna — a "máquina" é uma projeção de timestamps (`accepted_at`, `revoked_at`, `expires_at`),
   não transições persistidas. Documentada aqui como nota, não como diagrama de transições.

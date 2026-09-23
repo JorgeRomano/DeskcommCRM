@@ -53,9 +53,9 @@
 
 ## Fase 5: Revisão ✅
 
-- [ ] **Revisor** — Revisão cruzada de specs
-- [ ] **Revisor** — Resolução de lacunas com o usuário
-- [ ] **Revisor** — Relatório de confiança final
+- [x] **Revisor** — Revisão cruzada de specs (40 afirmações 🟢 verificadas contra o código; 2 reclassificações de contagem: 13→12 tools, 9→11 conferências) ✅
+- [x] **Revisor** — Resolução de lacunas com o usuário (6/6 perguntas respondidas; 6 lacunas 🔴/🟡 → 🟢) ✅
+- [x] **Revisor** — Relatório de confiança final (`confidence-report.md` + `gaps.md`; confiança geral 95,7%) ✅
 
 ---
 

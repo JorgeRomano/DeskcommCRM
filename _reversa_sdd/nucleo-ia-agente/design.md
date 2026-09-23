@@ -23,7 +23,7 @@ Entradas: jobs da fila (`job_queue`), drenados de `event_log`. Saídas: mensagen
 | `decidirOrcamento` | `(entrada: EntradaDeOrcamento)` | `Veredito` | Escapes ordenados + limiar | 🟢 |
 | `wrapToolsWithBreaker` | `(tools, thresholds)` | `ToolSet` | Circuit breaker de tools | 🟢 |
 
-Tools do agente (`AGENT_TOOL_DEFS`, superfície estática de 13, prefixo estável de cache): `get_lead_context`, `send_message`, `update_lead_state`, `schedule_followup`, `save_lead_note`, `get_lead_note`, `search_knowledge`, `request_human_handoff`, `read_skill_reference`, `open_human_case`, `provide_case_update`, `send_template`. — `inbound-turn.ts:190-431` 🟢
+Tools do agente (`AGENT_TOOL_DEFS`, superfície estática de 12, prefixo estável de cache): `get_lead_context`, `send_message`, `update_lead_state`, `schedule_followup`, `save_lead_note`, `get_lead_note`, `search_knowledge`, `request_human_handoff`, `read_skill_reference`, `open_human_case`, `provide_case_update`, `send_template`. — `inbound-turn.ts:191-431` 🟢 <!-- [Revisão] corrigido de 13→12: as 12 chaves enumeradas são exatamente as de AGENT_TOOL_DEFS -->
 
 ## Fluxo Principal
 
@@ -78,4 +78,4 @@ Guarda de envio (`send_message.execute`, `:2843-2962+`): `claimsCurrentInboundIs
 ## Riscos e Lacunas
 
 - 🟡 Valores exatos de env vars (janelas, caps, thresholds) vêm de `env.ts`/`turn-knobs.ts`; conferir defaults na instalação antes de reimplementar.
-- 🔴 Comportamento de reconciliação sob falhas parciais de rede na entrega (perda de resposta HTTP do provedor de canal) depende de validação com casos reais além do que `reconcileAcceptedSend` cobre.
+- 🟢 Política de reconciliação sob perda parcial de rede (o provedor de canal aceita o envio mas a resposta HTTP se perde): **prevenir duplicata a todo custo**. Diante de dúvida entre reenviar ou não, o sistema NÃO reenvia — tolera-se uma possível não-entrega em favor de nunca duplicar a mensagem ao lead. `reconcileAcceptedSend` implementa a base disso; a decisão de negócio é priorizar não-duplicação sobre entrega garantida. <!-- [Revisão] usuário confirmou 2026-09-23: prevenir duplicata a todo custo; era 🔴 -->

@@ -53,7 +53,7 @@
 2. T-05 (ponte de eventos) depende de T-02.
 3. T-06/T-07 (SIP) são independentes do WaCalls e podem ir em paralelo.
 
-## Lacunas Pendentes (🔴)
-- Topologia Asterisk (`pjsip.conf`/`extensions.conf`, `fn_resolve_inbound_number`) — validar com quem administra a VPS.
-- `audioSocketBridge.ts` precisa de escavação linha a linha antes de reimplementar o áudio SIP.
-- Ponte WebRTC humano→navegador do SIP está ausente ("esqueleto").
+## Lacunas Pendentes
+- 🟢 Topologia Asterisk (`pjsip.conf`/`extensions.conf`, `fn_resolve_inbound_number`): **dependência externa de infraestrutura** — não se reimplementa, assume-se pré-existente na VPS. <!-- [Revisão] usuário confirmou 2026-09-23 -->
+- 🟢 Ponte WebRTC humano→navegador do SIP é **esqueleto por desenho** (dívida conhecida); preservar como está. <!-- [Revisão] usuário confirmou 2026-09-23 -->
+- 🟡 `audioSocketBridge.ts` precisa de escavação linha a linha antes de reimplementar o áudio SIP (caveat de profundidade de leitura, não lacuna de decisão).

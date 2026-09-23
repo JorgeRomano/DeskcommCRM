@@ -83,6 +83,6 @@
 3. T-05/T-06/T-07 (guardrails, pacing/spinning, orçamento) antes de habilitar envio real.
 4. T-08 a T-11 por último (variantes de turno e resiliência).
 
-## Lacunas Pendentes (🔴)
-- Reconciliação de entrega sob perda de resposta HTTP do provedor além do que `reconcileAcceptedSend` cobre (validar com casos reais).
-- Valores exatos de env/knobs de produção (confirmar `env.ts`/`turn-knobs.ts` na instalação).
+## Lacunas Pendentes
+- 🟢 Reconciliação sob perda de resposta HTTP do provedor: política é **prevenir duplicata a todo custo** (não reenviar em caso de dúvida; tolera não-entrega, nunca duplica). <!-- [Revisão] usuário confirmou 2026-09-23 -->
+- 🟡 Valores exatos de env/knobs de produção (confirmar `env.ts`/`turn-knobs.ts` na instalação).

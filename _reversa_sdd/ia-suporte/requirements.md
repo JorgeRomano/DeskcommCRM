@@ -27,7 +27,7 @@ Duas metades complementares em torno do núcleo (`lib/agent-engine`): 🟢
 - RAG versão por fonte: `activateVersion` desativa a anterior ANTES de ativar (índice único uma-ativa-por-fonte). — `rag/version.ts:135` 🟢
 - Debounce de indexação falha ABERTA. — `rag/debounce.ts` 🟢
 - Busca de conhecimento usa piso −1 na RPC e filtra o limiar em memória (expõe o melhor candidato reprovado). — `knowledge/busca.ts:70` 🟢
-- Guardrails: 9 conferências de saída não se desligam; só `semantic_promise` tem escolha (+1 consulta/mensagem). — `guardrails/lista-de-conferencia.ts:66` 🟢
+- Guardrails: a cadeia de saída (`CONFERENCIAS_DE_SAIDA`) tem 11 conferências; 10 não se desligam e só `semantic_promise` tem escolha (+1 consulta/mensagem). Há ainda 1 conferência de entrada (`jailbreak_detect`, também com escolha de custo). — `guardrails/lista-de-conferencia.ts:71` 🟢 <!-- [Revisão] corrigido de "9"→"11": CONFERENCIAS_DE_SAIDA tem 11 entradas (linha 71), espelho 1:1 dos 11 gates de before-send.ts; a citação :66 apontava para o comentário do campo `camada` -->
 - MCP auth Bearer `dsk_`: hash SHA256 contra `token_hash`, checa revoked/expired; actor é `ai_agent` ou `api_token`, NUNCA `user`. — `mcp/auth.ts` 🟢
 - `motivoDoVazio`: "não achei" não é sucesso; desce para `api_audit_log.metadata.motivo`. — `mcp/types.ts:32` 🟢
 - Dispatcher é `@deprecated`; orgs em `ai_dispatch_mode='external'` são puladas (G6-02). — `dispatcher/index.ts` 🟢

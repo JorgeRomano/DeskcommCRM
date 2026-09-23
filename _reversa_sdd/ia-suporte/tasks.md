@@ -54,5 +54,4 @@
 3. T-06 (núcleo MCP) antes de T-07 (tools).
 
 ## Lacunas Pendentes (🔴)
-- Confirmar catálogo canônico de strings de modelo (`AGENT_MODELS` × `DEFAULT_*`).
-- `lib/ai/README.md` obsoleto: não usar como fonte.
+- 🟢 Fonte canônica das strings de modelo (`AGENT_MODELS` × `DEFAULT_*`) é `lib/ai/gateway.ts` (`DEFAULT_BOT_MODEL = "anthropic/claude-sonnet-5"`). O `lib/ai/README.md` está **obsoleto e deve ser ignorado** na reimplementação. <!-- [Revisão] usuário confirmou 2026-09-23 -->

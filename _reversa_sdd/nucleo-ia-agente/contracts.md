@@ -6,7 +6,7 @@
 
 ## Contrato 1 — Toolset do agente (modelo ↔ runtime)
 
-Superfície estática de 13 tools (`AGENT_TOOL_DEFS`, `inbound-turn.ts:190-431`). Schemas largos (`.passthrough()`) para o SDK; validação real por whitelist `.strict()` em cada `apply*`. Campo extra/forjado vira erro de ENSINO ao modelo. 🟢
+Superfície estática de 12 tools (`AGENT_TOOL_DEFS`, `inbound-turn.ts:191-431`). <!-- [Revisão] corrigido de 13→12: AGENT_TOOL_DEFS tem exatamente 12 chaves --> Schemas largos (`.passthrough()`) para o SDK; validação real por whitelist `.strict()` em cada `apply*`. Campo extra/forjado vira erro de ENSINO ao modelo. 🟢
 
 | Tool | Categoria | Efeito |
 |------|-----------|--------|

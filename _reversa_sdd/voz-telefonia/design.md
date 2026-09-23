@@ -57,7 +57,7 @@
 - `event_log voice_call.ended` (registro, status `done`); atividades de contato (`voice_call`/`voice_call_missed`/`voice_call_unanswered`); transcript SIP. 🟢
 
 ## Riscos e Lacunas
-- 🔴 `asterisk/pjsip.conf`/`extensions.conf` e `fn_resolve_inbound_number` vivem fora de `lib/` (aplicados manualmente por VPS, migration 0349) — topologia Asterisk é lacuna para validação humana.
-- 🟡 `workers/voice-agent/audioSocketBridge.ts` lido só por referência nesta passagem.
-- 🟡 Ponte WebRTC humano→navegador do SIP não implementada ("esqueleto"); `mode:'human'` grava dono mas não abre áudio.
+- 🟢 `asterisk/pjsip.conf`/`extensions.conf` e `fn_resolve_inbound_number` vivem fora de `lib/` (aplicados manualmente por VPS, migration 0349) e são **dependência externa de infraestrutura por decisão** — não fazem parte do artefato que se reimplementa. A reimplementação da voz assume a topologia Asterisk como pré-existente na VPS, não a reproduz. <!-- [Revisão] confirmado pelo usuário em 2026-09-23: dependência externa; era 🔴 -->
+- 🟢 Ponte WebRTC humano→navegador do SIP é **esqueleto por desenho** (dívida conhecida, não implementação faltante): `mode:'human'` grava o dono mas não abre áudio. Reimplementar deve preservar esse esqueleto, não inventar a ponte. <!-- [Revisão] confirmado pelo usuário em 2026-09-23: é esqueleto; era 🟡 -->
+- 🟡 `workers/voice-agent/audioSocketBridge.ts` lido só por referência nesta passagem — ler linha a linha antes de reimplementar o áudio SIP.
 - 🟡 Ligação encerrada com ponte SSE caída não vem no snapshot; linha segue aberta até o teto de 2h.
