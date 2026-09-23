@@ -8,13 +8,13 @@
   "doc_level": "detalhado",
   "output_folder": "_reversa_sdd",
   "forward_folder": "_reversa_forward",
-  "phase": "interpretacao",
+  "phase": "geracao",
   "completed": [
     "reconhecimento",
-    "escavacao"
+    "escavacao",
+    "interpretacao"
   ],
   "pending": [
-    "interpretacao",
     "geracao",
     "revisao"
   ],
@@ -68,6 +68,37 @@
         "_reversa_sdd/flowcharts/superficie-http.md",
         "_reversa_sdd/data-dictionary.md",
         ".reversa/context/modules.json"
+      ]
+    },
+    "detective": {
+      "completed_at": "2026-09-23T00:00:00Z",
+      "files": [
+        "_reversa_sdd/domain.md",
+        "_reversa_sdd/state-machines.md",
+        "_reversa_sdd/permissions.md",
+        "_reversa_sdd/adrs/README.md",
+        "_reversa_sdd/adrs/0001-multi-tenancy-com-rls-desde-o-dia-1.md",
+        "_reversa_sdd/adrs/0002-event-sourcing-leve-trigger-nunca-faz-http.md",
+        "_reversa_sdd/adrs/0003-ritual-do-turno-e-fechamento-por-checkpoint.md",
+        "_reversa_sdd/adrs/0004-guardrails-deterministicos-before-send.md",
+        "_reversa_sdd/adrs/0005-restricao-de-canal-feature-nunca-nomeia-provedor.md",
+        "_reversa_sdd/adrs/0006-webhooks-fail-closed-e-efeitos-pos-entrada-ordenados.md",
+        "_reversa_sdd/adrs/0007-pipeline-imutavel-mover-cross-pipeline-e-clonar.md",
+        "_reversa_sdd/adrs/0008-marca-propria-resolve-do-banco-nunca-do-env.md",
+        "_reversa_sdd/adrs/0009-packaging-imagem-publicada-bump-sem-editar-vps.md",
+        "_reversa_sdd/adrs/0010-crm-como-servidor-mcp-com-rbac-e-recusa-para-o-modelo.md"
+      ]
+    },
+    "architect": {
+      "completed_at": "2026-09-23T00:00:00Z",
+      "files": [
+        "_reversa_sdd/architecture.md",
+        "_reversa_sdd/c4-context.md",
+        "_reversa_sdd/c4-containers.md",
+        "_reversa_sdd/c4-components.md",
+        "_reversa_sdd/erd-complete.md",
+        "_reversa_sdd/traceability/spec-impact-matrix.md",
+        "_reversa_sdd/deployment.md"
       ]
     }
   },
