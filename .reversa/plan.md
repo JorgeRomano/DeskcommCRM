@@ -46,10 +46,10 @@
 
 ## Fase 4: Geração 📝
 
-- [ ] **Redator** — Specs SDD por componente
-- [ ] **Redator** — OpenAPI (se aplicável)
-- [ ] **Redator** — User Stories (se aplicável)
-- [ ] **Redator** — Code/Spec Matrix
+- [x] **Redator** — Specs SDD por componente (14 units híbridas: nucleo-ia-agente, ia-suporte, canais-mensageria, voz-telefonia, crm-funil, agenda-financeiro, automacao-roteamento, auth-tenancy-rbac, compliance, plataforma-operacao, integracoes-externas, eventos-tempo-real, infra-transversal-relatorios, superficie-http) ✅
+- [x] **Redator** — OpenAPI (`openapi/deskcomm-api.yaml`) ✅
+- [x] **Redator** — User Stories (`user-stories/`: turno-do-agente, handoff-e-retomada, lgpd-direitos-do-titular, onboarding-e-marca) ✅
+- [x] **Redator** — Code/Spec Matrix (`traceability/code-spec-matrix.md`) ✅
 
 ## Fase 5: Revisão ✅
 

@@ -8,14 +8,23 @@
   "doc_level": "detalhado",
   "output_folder": "_reversa_sdd",
   "forward_folder": "_reversa_forward",
-  "phase": "geracao",
+  "phase": "revisao",
+  "redator_progress": {
+    "granularity": "hybrid",
+    "units_total": 14,
+    "units_done": ["nucleo-ia-agente", "ia-suporte", "canais-mensageria", "voz-telefonia", "crm-funil", "agenda-financeiro", "automacao-roteamento", "auth-tenancy-rbac", "compliance", "plataforma-operacao", "integracoes-externas", "eventos-tempo-real", "infra-transversal-relatorios", "superficie-http"],
+    "globais_done": ["openapi/deskcomm-api.yaml", "user-stories/turno-do-agente.md", "user-stories/handoff-e-retomada.md", "user-stories/lgpd-direitos-do-titular.md", "user-stories/onboarding-e-marca.md", "traceability/code-spec-matrix.md"],
+    "last_file": "_reversa_sdd/traceability/code-spec-matrix.md",
+    "completed_at": "2026-09-23T00:00:00Z",
+    "updated_at": "2026-09-23T00:00:00Z"
+  },
   "completed": [
     "reconhecimento",
     "escavacao",
-    "interpretacao"
+    "interpretacao",
+    "geracao"
   ],
   "pending": [
-    "geracao",
     "revisao"
   ],
   "checkpoints": {
@@ -99,6 +108,30 @@
         "_reversa_sdd/erd-complete.md",
         "_reversa_sdd/traceability/spec-impact-matrix.md",
         "_reversa_sdd/deployment.md"
+      ]
+    },
+    "writer": {
+      "completed_at": "2026-09-23T00:00:00Z",
+      "granularity": "hybrid",
+      "units": 14,
+      "files": [
+        "_reversa_sdd/nucleo-ia-agente/",
+        "_reversa_sdd/ia-suporte/",
+        "_reversa_sdd/canais-mensageria/",
+        "_reversa_sdd/voz-telefonia/",
+        "_reversa_sdd/crm-funil/",
+        "_reversa_sdd/agenda-financeiro/",
+        "_reversa_sdd/automacao-roteamento/",
+        "_reversa_sdd/auth-tenancy-rbac/",
+        "_reversa_sdd/compliance/",
+        "_reversa_sdd/plataforma-operacao/",
+        "_reversa_sdd/integracoes-externas/",
+        "_reversa_sdd/eventos-tempo-real/",
+        "_reversa_sdd/infra-transversal-relatorios/",
+        "_reversa_sdd/superficie-http/",
+        "_reversa_sdd/openapi/deskcomm-api.yaml",
+        "_reversa_sdd/user-stories/",
+        "_reversa_sdd/traceability/code-spec-matrix.md"
       ]
     }
   },

@@ -1,0 +1,235 @@
+openapi: 3.1.0
+# OpenAPI representativo do DeskcommCRM — gerado pelo Redator (Reversa), doc_level=detalhado.
+# CONFIRMADO (🟢): envelope, superfícies, guards e as rotas-amostra lidas no code-analysis (Unidade 14).
+# INFERIDO/LACUNA (🟡/🔴): os campos exatos de cada payload das ~337 rotas de v1 NÃO foram lidos um a um.
+#   Reconferir com `git ls-files 'app/api/**/route.ts'` e os 24 schemas de lib/schemas/ antes de tratar
+#   este arquivo como contrato completo. Serve como esqueleto fiel do padrão, não como catálogo exaustivo.
+info:
+  title: DeskcommCRM API (v1)
+  version: "1.0.0"
+  description: >
+    API REST versionada por path do DeskcommCRM. Multi-tenant com RLS. Envelope canônico
+    ({data,meta?} / {error}) e X-Request-Id em toda resposta. Superfícies: v1 (cookie/auth-dual),
+    cron (Bearer interno), webhooks (HMAC + path token), internal (x-internal-secret), mcp (Bearer dsk_, JSON-RPC).
+servers:
+  - url: /api/v1
+    description: Superfície REST versionada
+tags:
+  - name: leads
+  - name: conversations
+  - name: contacts
+  - name: agenda
+  - name: lgpd
+  - name: webhooks
+  - name: health
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Healthcheck público
+      security: []
+      responses:
+        "200":
+          description: OK
+          headers: { X-Request-Id: { $ref: "#/components/headers/XRequestId" } }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessEnvelope" }
+
+  /leads:
+    get:
+      tags: [leads]
+      summary: Lista negócios (crm_leads) do tenant
+      description: "🟢 requireRole(viewer). RLS + filtro de organization_id. meta suporta cursor."
+      parameters:
+        - { name: cursor, in: query, schema: { type: string }, required: false }
+      responses:
+        "200":
+          description: Lista paginada
+          headers: { X-Request-Id: { $ref: "#/components/headers/XRequestId" } }
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessEnvelope"
+                  - type: object
+                    properties:
+                      meta: { $ref: "#/components/schemas/CursorMeta" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    post:
+      tags: [leads]
+      summary: Cria um negócio
+      description: "🟢 requireRole(agent). Idempotency-Key aceita. Zod valida o body."
+      parameters:
+        - { name: Idempotency-Key, in: header, schema: { type: string, format: uuid }, required: false }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LeadCreate" }
+      responses:
+        "201":
+          description: Criado
+          headers: { X-Request-Id: { $ref: "#/components/headers/XRequestId" } }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessEnvelope" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /leads/{id}/win:
+    post:
+      tags: [leads]
+      summary: Marca o negócio como ganho
+      description: "🟢 Funil sem etapa de ganho responde pipeline_no_won_stage."
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /conversations:
+    get:
+      tags: [conversations]
+      summary: Lista conversas (respeita VisibilityMode do atendente)
+      description: "🟢 requireRole(viewer). Também disponível por auth-dual (cookie OU bearer dsk_)."
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /contacts:
+    get:
+      tags: [contacts]
+      summary: Lista contatos (auth-dual)
+      description: "🟢 cookie OU bearer dsk_ via lib/api/auth-dual.ts; entrada em public-paths."
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } } }
+
+  /agenda/free-slots:
+    get:
+      tags: [agenda]
+      summary: Horários livres de um tipo de atendimento
+      description: "🟢 Motor puro horariosLivres; recusa honesta (tipo_desconhecido/sem_responsavel/jornada_mal_configurada)."
+      parameters:
+        - { name: event_type, in: query, required: true, schema: { type: string } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /lgpd/anonymize:
+    post:
+      tags: [lgpd]
+      summary: Anonimiza um contato (Art. 18, irreversível)
+      description: "🟢 requireRole(admin) sobre a org do CONTATO. Cascata idempotente; foto enfileirada antes."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contact_id]
+              properties:
+                contact_id: { type: string, format: uuid }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } } }
+        "403":
+          description: "lgpd_anonymization_irreversible / mfa_required / forbidden_role"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+
+  /webhooks/in/{token}:
+    post:
+      tags: [webhooks]
+      summary: Captação de lead por webhook (HMAC + path token)
+      description: >
+        🟢 Org do PATH TOKEN, nunca do body. Rate-limit por token (60/min). HMAC timingSafeEqual.
+        Idempotência por external_id. Superfície não-cookie (guard próprio).
+      security: []
+      parameters:
+        - { name: token, in: path, required: true, schema: { type: string, minLength: 8 } }
+        - { name: X-Signature, in: header, required: false, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { type: object, additionalProperties: true } }
+      responses:
+        "200":
+          description: Lead criado
+          content: { application/json: { schema: { $ref: "#/components/schemas/SuccessEnvelope" } } }
+        "401":
+          description: invalid_signature
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+        "404": { description: "token < 8 chars ou fonte inativa" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+components:
+  headers:
+    XRequestId:
+      description: Identificador de correlação com o audit log
+      schema: { type: string, format: uuid }
+  securitySchemes:
+    cookieSession:
+      type: apiKey
+      in: cookie
+      name: sb-deskcomm-auth
+      description: "Sessão Supabase (SameSite=strict, httpOnly). Validada por getUser() no servidor."
+    bearerDsk:
+      type: http
+      scheme: bearer
+      description: "API key de organização dsk_<prefix>_<secret> contra api_tokens (auth-dual/mcp)."
+  responses:
+    Unauthorized:
+      description: unauthenticated
+      headers: { X-Request-Id: { $ref: "#/components/headers/XRequestId" } }
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+    Forbidden:
+      description: forbidden / forbidden_role / forbidden_tenant / mfa_required
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+    Conflict:
+      description: idempotency_conflict / idempotency_in_progress / state_conflict / duplicate_external_id
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+    ValidationFailed:
+      description: validation_failed / invalid_request
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+    RateLimited:
+      description: rate_limited
+      headers:
+        Retry-After: { schema: { type: integer } }
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorEnvelope" } } }
+  schemas:
+    SuccessEnvelope:
+      type: object
+      required: [data]
+      properties:
+        data: {}
+        meta: { type: object }
+    CursorMeta:
+      type: object
+      properties:
+        cursor: { type: string, nullable: true }
+        has_more: { type: boolean }
+        total: { type: integer, nullable: true }
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, description: "Código do catálogo lib/api/errors.ts" }
+            message: { type: string }
+            details: { type: object, nullable: true }
+    LeadCreate:
+      type: object
+      description: "🟡 Campos representativos; reconferir com lib/schemas/. JSON snake_case; dinheiro em _cents."
+      properties:
+        contact_id: { type: string, format: uuid }
+        pipeline_id: { type: string, format: uuid }
+        source: { type: string, default: "ai_agent" }
+        value_cents: { type: integer, nullable: true }
+        currency: { type: string, example: "BRL" }
+security:
+  - cookieSession: []
+  - bearerDsk: []
