@@ -20,20 +20,20 @@
 
 > Módulos reais agrupados por domínio pelo Scout (2026-09-22). Cada linha é uma unidade de análise do Arqueólogo.
 
-- [ ] **Arqueólogo** — Núcleo de IA: `lib/agent-engine/` (turno inbound/outbound, playbooks, guardrails, pacing, spinning, queue, flywheel)
-- [ ] **Arqueólogo** — IA de suporte: `lib/ai/` (modelos, custo, orçamento, RAG, dispatcher) + `lib/mcp/`
-- [ ] **Arqueólogo** — Canais e mensageria: `lib/channels/`, `lib/waha/`, `lib/messaging/`, `lib/inbox/`, `lib/atendimento/`, `lib/notifications/`, `lib/email/`
-- [ ] **Arqueólogo** — Voz/telefonia: `lib/voice/`, `lib/voip/`, `lib/wacalls/`
-- [ ] **Arqueólogo** — CRM e funil: `lib/leads/`, `lib/pipelines/`, `lib/kanban/`, `lib/contacts/`, `lib/tags/`, `lib/conversoes/`, `lib/prospecting/`
-- [ ] **Arqueólogo** — Agenda e financeiro: `lib/agenda/`, `lib/financeiro/`, `lib/catalogo/`
-- [ ] **Arqueólogo** — Automação e roteamento: `lib/automation/`, `lib/routing/`, `lib/followup/`, `lib/escalacao/`
-- [ ] **Arqueólogo** — Auth, tenancy e RBAC: `lib/auth/`, `lib/tenants/`, `lib/team/`, `lib/users/`, `lib/impersonate/`, `proxy.ts`
-- [ ] **Arqueólogo** — Compliance: `lib/lgpd/`, `lib/legal/`, `lib/opt-out/`, `lib/retencao/`, `lib/audit/`
-- [ ] **Arqueólogo** — Plataforma e operação: `lib/settings/`, `lib/onboarding/`, `lib/instalacao/`, `lib/branding/`, `lib/navigation/`, `lib/system/`, `lib/operacao/`, `lib/release/`
-- [ ] **Arqueólogo** — Integrações externas: `lib/external-db/`, `lib/nuvemshop/`, `lib/plataformas-de-anuncio/`, `lib/extensions/` (+ `extensoes/`)
-- [ ] **Arqueólogo** — Eventos e tempo real: `lib/event-log/`, `lib/realtime/`, `lib/relogio/`, `lib/tempo/` + `workers/`
-- [ ] **Arqueólogo** — Infra transversal e relatórios: `lib/api/`, `lib/supabase/`, `lib/reports/`, `lib/metrics/`, `lib/query/`, `lib/schemas/`, `lib/http/`, `lib/net/`, `lib/crypto/`, `lib/i18n/`
-- [ ] **Arqueólogo** — Superfície HTTP: `app/api/v1/**` (roteamento, guards, wrappers) e Server Actions `app/actions/`
+- [x] **Arqueólogo** — Núcleo de IA: `lib/agent-engine/` (turno inbound/outbound, playbooks, guardrails, pacing, spinning, queue, flywheel) ✅
+- [x] **Arqueólogo** — IA de suporte: `lib/ai/` (modelos, custo, orçamento, RAG, dispatcher) + `lib/mcp/` ✅
+- [x] **Arqueólogo** — Canais e mensageria: `lib/channels/`, `lib/waha/`, `lib/messaging/`, `lib/inbox/`, `lib/atendimento/`, `lib/notifications/`, `lib/email/` ✅
+- [x] **Arqueólogo** — Voz/telefonia: `lib/voice/`, `lib/voip/`, `lib/wacalls/` ✅
+- [x] **Arqueólogo** — CRM e funil: `lib/leads/`, `lib/pipelines/`, `lib/kanban/`, `lib/contacts/`, `lib/tags/`, `lib/conversoes/`, `lib/prospecting/` ✅
+- [x] **Arqueólogo** — Agenda e financeiro: `lib/agenda/`, `lib/financeiro/`, `lib/catalogo/` ✅
+- [x] **Arqueólogo** — Automação e roteamento: `lib/automation/`, `lib/routing/`, `lib/followup/`, `lib/escalacao/` ✅
+- [x] **Arqueólogo** — Auth, tenancy e RBAC: `lib/auth/`, `lib/tenants/`, `lib/team/`, `lib/users/`, `lib/impersonate/`, `proxy.ts` ✅
+- [x] **Arqueólogo** — Compliance: `lib/lgpd/`, `lib/legal/`, `lib/opt-out/`, `lib/retencao/`, `lib/audit/` ✅
+- [x] **Arqueólogo** — Plataforma e operação: `lib/settings/`, `lib/onboarding/`, `lib/instalacao/`, `lib/branding/`, `lib/navigation/`, `lib/system/`, `lib/operacao/` ✅, `lib/release/`
+- [x] **Arqueólogo** — Integrações externas: `lib/external-db/`, `lib/nuvemshop/`, `lib/plataformas-de-anuncio/`, `lib/extensions/` (+ `extensoes/`) ✅
+- [x] **Arqueólogo** — Eventos e tempo real: `lib/event-log/`, `lib/realtime/`, `lib/relogio/`, `lib/tempo/` + `workers/` ✅
+- [x] **Arqueólogo** — Infra transversal e relatórios: `lib/api/`, `lib/supabase/`, `lib/reports/`, `lib/metrics/`, `lib/query/`, `lib/schemas/`, `lib/http/`, `lib/net/`, `lib/crypto/`, `lib/i18n/` ✅
+- [x] **Arqueólogo** — Superfície HTTP: `app/api/v1/**` (roteamento, guards, wrappers) e Server Actions `app/actions/` ✅
 
 ## Fase 3: Interpretação 🧠
 

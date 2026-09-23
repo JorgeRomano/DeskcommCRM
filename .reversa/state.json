@@ -8,11 +8,12 @@
   "doc_level": "detalhado",
   "output_folder": "_reversa_sdd",
   "forward_folder": "_reversa_forward",
-  "phase": "reconhecimento",
-  "completed": [],
-  "pending": [
+  "phase": "interpretacao",
+  "completed": [
     "reconhecimento",
-    "escavacao",
+    "escavacao"
+  ],
+  "pending": [
     "interpretacao",
     "geracao",
     "revisao"
@@ -24,6 +25,49 @@
         "_reversa_sdd/inventory.md",
         "_reversa_sdd/dependencies.md",
         ".reversa/context/surface.json"
+      ]
+    },
+    "archaeologist": {
+      "modules_analyzed": [
+        "agent-engine",
+        "ai",
+        "mcp",
+        "channels",
+        "waha",
+        "messaging-inbox-atendimento",
+        "notifications-email",
+        "voz-telefonia",
+        "crm-funil",
+        "agenda-financeiro",
+        "automacao-roteamento",
+        "auth-tenancy-rbac",
+        "compliance",
+        "plataforma-operacao",
+        "integracoes-externas",
+        "eventos-tempo-real",
+        "infra-transversal-relatorios",
+        "superficie-http"
+      ],
+      "modules_pending": [],
+      "completed_at": "2026-09-23T00:00:00Z",
+      "files": [
+        "_reversa_sdd/code-analysis.md",
+        "_reversa_sdd/flowcharts/agent-engine.md",
+        "_reversa_sdd/flowcharts/ai-suporte.md",
+        "_reversa_sdd/flowcharts/canais-mensageria.md",
+        "_reversa_sdd/flowcharts/voz-telefonia.md",
+        "_reversa_sdd/flowcharts/crm-funil.md",
+        "_reversa_sdd/flowcharts/agenda-financeiro.md",
+        "_reversa_sdd/flowcharts/automacao-roteamento.md",
+        "_reversa_sdd/flowcharts/auth-tenancy-rbac.md",
+        "_reversa_sdd/flowcharts/compliance.md",
+        "_reversa_sdd/flowcharts/plataforma-operacao.md",
+        "_reversa_sdd/flowcharts/integracoes-externas.md",
+        "_reversa_sdd/flowcharts/eventos-tempo-real.md",
+        "_reversa_sdd/flowcharts/infra-transversal-relatorios.md",
+        "_reversa_sdd/flowcharts/superficie-http.md",
+        "_reversa_sdd/data-dictionary.md",
+        ".reversa/context/modules.json"
       ]
     }
   },
